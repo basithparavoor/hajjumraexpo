@@ -83,26 +83,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const newFormGroup = document.createElement('div');
         newFormGroup.className = 'form-group';
         const newLabel = document.createElement('label');
-        newLabel.textContent = `Google Drive Image Share Link ${imageCounter}`;
+        newLabel.textContent = `Image URL ${imageCounter}`;
         const newInput = document.createElement('input');
         newInput.type = 'text';
         newInput.className = 'image-url-input';
-        newInput.placeholder = 'Paste the standard share link from Google Drive here';
+        newInput.placeholder = 'Paste a direct image link here';
         newFormGroup.appendChild(newLabel);
         newFormGroup.appendChild(newInput);
         imageFieldsContainer.appendChild(newFormGroup);
         imageCounter++;
     });
 
-    function convertDriveLink(shareLink, type = 'image') {
+    // This function now only processes Google Drive links for audio.
+    function convertDriveLink(shareLink, type = 'audio') {
         if (shareLink && shareLink.includes('drive.google.com/file/d/')) {
             try {
                 const parts = shareLink.split('/d/');
                 const fileId = parts[1].split('/')[0];
                 if (type === 'audio') {
                     return `https://drive.google.com/file/d/${fileId}/preview`;
-                } else {
-                    return `https://drive.google.com/uc?id=${fileId}`;
                 }
             } catch (error) {
                 console.error("Could not parse Google Drive link:", shareLink, error);
@@ -132,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const finalImages = imageShareLinks.map(link => convertDriveLink(link, 'image'));
+        const finalImages = imageShareLinks; // Use direct links
         const imagesArrayString = finalImages.map(link => `\n            '${link}'`).join(',');
         
         const finalAudioLink = convertDriveLink(audioShareLink, 'audio');

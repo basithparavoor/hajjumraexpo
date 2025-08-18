@@ -8,8 +8,8 @@ const articles = [
         keywords: 'മസ്ജിദു ഖുബാ',
         title: 'മസ്ജിദു ഖുബാ',
         images: [
-            'https://drive.google.com/uc?id=1HNtFfy83wJlWelX5J8MYsEfDaKOoCYo2',
-            'https://drive.google.com/uc?id=1Ca7n24HD4ALyGy9_rBZI6mVsfMhy0WrX'
+            'https://i.postimg.cc/vm1RTfwp/QUBA.jpg',
+            'https://i.postimg.cc/T2VzKTBY/download.webp'
         ],
         notes: `
             <P>ഖുർആൻ പരിചയപ്പെടുത്തിയ തഖ്‌വയിൽ അടിത്തറ പാകിയ ആദ്യ പള്ളിയാണ് മസ്ജിദു ഖുബാ. നിസ്‌കാരത്തിന് ഉംറയുടെ പ്രതിഫലമുള്ള പള്ളിയാണത്. നബി(സ) എല്ലാ ശനിയാഴ്‌ചകളിലും കാൽ നടയായൊ വാഹനപ്പുറമേറിയൊ ഖുബായിൽ എത്തിയിരുന്നു. അതിനാൽ ശനിയാഴ്ചകളിൽ ശക്തമായ തിരിക്കായിരിക്കും ഇവിടെ.
