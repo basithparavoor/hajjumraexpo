@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Article</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1><a href="index.html">HAJJ UMRA EXPO</a></h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <main class="article-main">
+        <button id="download-pdf-btn" class="button-download hidden">Download as PDF</button>
+
+        <article id="article-content">
+            <h1 id="article-title">Loading Article...</h1>
+            <div id="article-images" class="article-image-container"></div>
+            <div id="article-notes" class="notes"></div>
+            <div id="article-audio" class="audio-player"></div>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Basith Paravoor. All Rights Reserved.</p>
+    </footer>
+    
+    <script src="data.js"></script>
+    <script src="article.js"></script>
+</body>
+</html>

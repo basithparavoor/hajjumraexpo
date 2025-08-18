@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXPO 2025</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <header>
+        <h1><a href="index.html">HAJJ UMRA EXPO</a></h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <main>
+
+         <div class="hero-container">
+            <div class="hero-text">
+                <h2>Explore Worlds of Knowledge</h2>
+                <p>Your premium gateway to curated research and insights.</p>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search by keyword or title...">
+            <select id="topicFilter">
+                <option value="all">All Topics</option>
+                <option value="technology">Technology</option>
+                <option value="science">Science</option>
+                <option value="history">History</option>
+                <option value="art">Art</option>
+            </select>
+        </div>
+
+        <div id="research-grid">
+            </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Basith Paravoor. All Rights Reserved.</p>
+        <nav><a href="create.html">Admin Console</a></nav>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+<script>
+    /*
+    // Service Worker registration commented out because sw.js file is missing.
+    // To enable, create a sw.js file with the appropriate service worker logic.
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('ServiceWorker registered successfully.');
+                }).catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+        });
+    }
+    */
+</script>
+
+</body>
+</html>

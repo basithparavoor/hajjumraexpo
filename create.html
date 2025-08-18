@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Console | EXPO 2025</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="password-overlay">
+        <div class="password-box">
+            <h2>Admin Access</h2>
+            <p>Please enter the password to continue.</p>
+            <input type="password" id="password-input" placeholder="Password">
+            <button id="password-submit">Submit</button>
+            <p id="password-error" class="hidden">Incorrect password. Please try again.</p>
+        </div>
+    </div>
+
+    <div id="protected-content" class="hidden">
+        <header>
+            <h1><a href="index.html">HAJJ UMRA EXPO</a></h1>
+            <nav>
+                <a href="index.html">Home</a>
+            </nav>
+        </header>
+
+        <main class="creator-main-container">
+            <div class="creator-tabs">
+                <button class="tab-link active" data-tab="article-creator">Create Article</button>
+                <button class="tab-link" data-tab="qr-creator">Create QR Code</button>
+            </div>
+
+            <div id="article-creator" class="tab-content active">
+                <div class="creator-form">
+                    <h2>Create a New Article</h2>
+                    <p>Fill out the fields below. When you're done, click "Generate Code" and Copy the result and send to Basith Paravoor.</p>
+
+                    <div class="form-group">
+                        <label for="title">Article Title</label>
+                        <input type="text" id="title" placeholder="e.g., The Secrets of Ancient Egypt">
+                    </div>
+
+                   <div class="form-group">
+                        <label for="topic">Topic</label>
+                        <div class="topic-container">
+                            <select id="topic">
+                                <option value="technology">Technology</option>
+                                <option value="science">Science</option>
+                                <option value="history">History</option>
+                                <option value="art">Art</option>
+                            </select>
+                            <button type="button" id="add-topic-btn" class="add-topic-button">Add Topic</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="keywords">Keywords (comma-separated)</label>
+                        <input type="text" id="keywords" placeholder="e.g., egypt, pyramids, pharaohs">
+                    </div>
+                    
+                    <div id="image-fields-container">
+                        <div class="form-group">
+                            <label for="image1">Google Drive Image Share Link 1</label>
+                            <input type="text" id="image1" class="image-url-input" placeholder="Paste the standard share link from Google Drive here">
+                        </div>
+                    </div>
+
+                    <button type="button" id="add-image-btn" class="add-image-button">Add Another Image</button>
+
+                    <div class="form-group">
+                        <label for="notes">Notes (use &lt;p&gt; tags for paragraphs)</label>
+                        <textarea id="notes" rows="8" placeholder="<p>Start your first paragraph here...</p><p>And a second one here...</p>"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="audio">Google Drive Audio Share Link</label>
+                        <input type="text" id="audio" placeholder="Paste the standard share link from Google Drive here">
+                    </div>
+                    <button id="generate-btn">Generate Code</button>
+                </div>
+
+                <div class="output-container">
+                    <h3>Generated Code</h3>
+                    <pre id="output-code"><code>// Your code will appear here...</code></pre>
+                    <button id="copy-btn">Copy to Clipboard</button>
+                    <p id="copy-feedback" class="hidden">Copied!</p>
+                </div>
+            </div>
+
+            <div id="qr-creator" class="tab-content">
+                <div class="creator-form">
+                    <h2>Create a QR Code</h2>
+                    <p>Enter any URL below to generate a downloadable QR code.</p>
+
+                    <div class="form-group">
+                        <label for="qr-link">Link to Convert</label>
+                        <input type="text" id="qr-link" placeholder="e.g., https://www.google.com">
+                    </div>
+                    <button id="generate-qr-btn">Generate QR Code</button>
+                </div>
+
+                <div id="qr-output" class="output-container hidden">
+                    <h3>Generated QR Code</h3>
+                    <div class="qr-code-display">
+                        <img id="qr-code-img" src="" alt="Generated QR Code">
+                    </div>
+                    <a id="download-qr-btn" class="button-download" href="#" download="qrcode.png">Download QR Code</a>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Basith Paravoor. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <script src="create.js"></script>
+</body>
+</html>
