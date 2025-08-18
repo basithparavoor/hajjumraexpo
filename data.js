@@ -215,7 +215,7 @@ const articles = [
         keywords: 'ഹുദൈബിയ്യ',
         title: 'ഹുദൈബിയ്യ',
         images: [
-            'https://drive.google.com/uc?id=1Tl45If-5zDLSWTjEP6eBnMcJsn9VxpZm',
+            'https://ibb.co/FbyGFYPD',
             'https://drive.google.com/uc?id=1o5x9KcHNUxZ3BQzawFZCUwZvJBZpM7bz'
         ],
         notes: `
