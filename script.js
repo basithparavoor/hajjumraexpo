@@ -6,6 +6,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
     const topicFilter = document.getElementById('topicFilter');
 
+    // --- NEW: Automatic Header Image Slideshow ---
+    const heroContainer = document.querySelector('.hero-container');
+    if (heroContainer && typeof articles !== 'undefined' && articles.length > 0) {
+        // 1. Collect all available image URLs from the articles array
+        const allImages = articles.flatMap(article => article.images);
+        
+        if (allImages.length > 0) {
+            let currentIndex = 0;
+
+            // Optional: Preload images in the background for smoother transitions
+            allImages.forEach(src => {
+                new Image().src = src;
+            });
+
+            // 2. Set the first image immediately
+            heroContainer.style.backgroundImage = `url('${allImages[0]}')`;
+
+            // 3. Set up the interval to change the image every 3 seconds
+            setInterval(() => {
+                // Move to the next image index, looping back to the start if needed
+                currentIndex = (currentIndex + 1) % allImages.length;
+                
+                // 4. Update the background image of the hero container
+                heroContainer.style.backgroundImage = `url('${allImages[currentIndex]}')`;
+            }, 3000); // 3000 milliseconds = 3 seconds
+        }
+    }
+    // --- End of Slideshow Code ---
+
+
     // Function to populate the homepage with article cards
     function populateHomepage() {
         researchGrid.innerHTML = ''; // Clear existing content

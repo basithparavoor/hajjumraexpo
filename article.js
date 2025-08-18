@@ -29,19 +29,19 @@ document.addEventListener('DOMContentLoaded', () => {
         
         downloadPdfBtn.classList.remove('hidden');
         
-        // --- REVISED Image Display Logic ---
+        // --- Image Display Logic ---
         articleImagesEl.innerHTML = ''; // Clear existing
         article.images.forEach((imgSrc, index) => {
             const img = document.createElement('img');
             img.src = imgSrc;
             img.alt = `${article.title} Image ${index + 1}`;
 
-            // Add click event to each image
+            // Add click event to each image to open the modal
             img.addEventListener('click', () => {
                 imageModal.classList.remove('hidden');
                 modalImage.src = imgSrc;
                 
-                // Set download link and filename
+                // Set download link and filename for the download button
                 const safeFilename = `${article.title.replace(/[\s/\\?%*:|"<>]/g, '_')}_Image_${index + 1}_HAJJ_UMRA_EXPO.jpg`;
                 modalDownloadBtn.href = imgSrc;
                 modalDownloadBtn.setAttribute('download', safeFilename);
@@ -78,11 +78,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
         closeModalBtn.addEventListener('click', closeModal);
         imageModal.addEventListener('click', (event) => {
-            // Close modal if the background overlay is clicked
             if (event.target === imageModal) {
                 closeModal();
             }
         });
+        
+        // --- NEW: Direct Image Download Logic ---
+        modalDownloadBtn.addEventListener('click', (event) => {
+            // Prevent the default link behavior
+            event.preventDefault(); 
+            
+            const button = event.currentTarget;
+            const imgSrc = button.href;
+            const filename = button.getAttribute('download');
+            
+            // Give user feedback that download is starting
+            button.textContent = 'Downloading...';
+            button.style.pointerEvents = 'none';
+
+            fetch(imgSrc)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok.');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    // Create a temporary link to trigger the download
+                    const blobUrl = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = blobUrl;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(blobUrl);
+
+                    // Reset button state
+                    button.textContent = 'Download Image';
+                    button.style.pointerEvents = 'auto';
+                })
+                .catch(err => {
+                    console.error('Image download failed:', err);
+                    alert('Sorry, the image could not be downloaded. It might be due to a network issue or server restrictions.');
+                    // Reset button state on error
+                    button.textContent = 'Download Image';
+                    button.style.pointerEvents = 'auto';
+                });
+        });
+
 
         // --- PDF Download Logic ---
         downloadPdfBtn.addEventListener('click', () => {

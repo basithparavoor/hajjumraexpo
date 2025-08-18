@@ -9,7 +9,26 @@
     --card-bg: #ffffff;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --border-radius: 8px;
+    --border-color: #e9ecef;
+    --input-border-color: #ced4da;
+    --header-bg: #2c3e50;
+    --header-text: white;
 }
+
+/* Add dark mode variables */
+.dark-mode {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --accent-color: #1abc9c;
+    --text-color: #ecf0f1;
+    --card-bg: #34495e;
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+    --border-color: #4a627a;
+    --input-border-color: #5d7a99;
+    --header-bg: #1f2c38;
+    --header-text: #ecf0f1;
+}
+
 
 /* ============================================================ */
 /* ANIMATIONS */
@@ -57,11 +76,12 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     animation: fadeIn 0.8s ease-in-out;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 header {
-    background-color: var(--primary-color);
-    color: white;
+    background-color: var(--header-bg);
+    color: var(--header-text);
     padding: 1.25rem 5%;
     display: flex;
     justify-content: space-between;
@@ -70,6 +90,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 1000;
+    transition: background-color 0.3s;
 }
 
 header h1 {
@@ -79,20 +100,45 @@ header h1 {
 }
 
 header h1 a {
-    color: white;
+    color: var(--header-text);
     text-decoration: none;
 }
 
+header nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
 header nav a {
-    color: white;
+    color: var(--header-text);
     text-decoration: none;
-    margin-left: 2rem;
     font-weight: 500;
     transition: color 0.3s ease;
 }
 
 header nav a:hover {
     color: var(--accent-color);
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid transparent;
+    color: var(--header-text);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s, transform 0.3s;
+}
+.theme-toggle-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
 }
 
 main {
@@ -107,7 +153,6 @@ main {
     margin-bottom: 2.5rem;
     border-radius: var(--border-radius);
     overflow: hidden;
-    background-image: url('https://placehold.co/1200x350/2c3e50/ffffff?text=Knowledge+Gateway');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -115,6 +160,7 @@ main {
     justify-content: center;
     color: white;
     text-align: center;
+    transition: background-image 1s ease-in-out;
 }
 
 .hero-container::before {
@@ -146,7 +192,7 @@ main {
     font-weight: 300;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
     animation: fadeInUp 0.8s ease-out 0.2s forwards;
-    opacity: 0; /* Start hidden for animation */
+    opacity: 0;
 }
 
 /* Search & Grid */
@@ -159,16 +205,19 @@ main {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     animation: fadeInUp 0.8s ease-out 0.4s forwards;
-    opacity: 0; /* Start hidden for animation */
+    opacity: 0; 
+    transition: background-color 0.3s;
 }
 
 .search-container input, .search-container select {
     width: 100%;
     padding: 0.8rem 1rem;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--input-border-color);
     border-radius: 6px;
     font-size: 1rem;
     transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
 }
 
 .search-container input:focus, .search-container select:focus {
@@ -183,7 +232,6 @@ main {
     gap: 2rem;
 }
 
-/* Added class for card animation */
 .research-card.fade-in-up {
     opacity: 0;
     animation: fadeInUp 0.6s ease-out forwards;
@@ -194,12 +242,12 @@ main {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     overflow: hidden;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s;
     display: flex;
     flex-direction: column;
     text-decoration: none;
     color: inherit;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--border-color);
 }
 
 .research-card .notes {
@@ -216,7 +264,7 @@ main {
     font-weight: 600;
     padding: 1.5rem;
     margin: 0;
-    color: var(--primary-color);
+    color: var(--text-color);
 }
 
 .image-container {
@@ -236,7 +284,8 @@ main {
 .notes p {
     margin-top: 0;
     font-size: 0.95rem;
-    color: #555;
+    color: var(--text-color);
+    opacity: 0.9;
 }
 
 .notes h3 {
@@ -250,17 +299,14 @@ main {
     letter-spacing: 0.5px;
 }
 
-
-/* ============================================================ */
-/* AUDIO PLAYER STYLES (Article Page) */
-/* ============================================================ */
-
+/* AUDIO PLAYER STYLES */
 .audio-player {
-    background-color: #f8f9fa; /* A light, clean background */
-    border-radius: var(--border-radius); /* Consistent rounded corners */
-    margin-top: 2rem; /* Space above the player box */
-    padding: 1.5rem; /* Internal spacing */
-    border: 1px solid #e9ecef; /* Subtle border */
+    background-color: var(--secondary-color);
+    border-radius: var(--border-radius);
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s;
 }
 
 .audio-player h3 {
@@ -268,43 +314,42 @@ main {
     margin-bottom: 1rem;
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--primary-color);
-    text-transform: none; /* More modern, less shouty */
+    color: var(--text-color);
+    text-transform: none;
     letter-spacing: 0;
-    border-bottom: none; /* Remove the old underline for a cleaner look */
+    border-bottom: none;
     padding-bottom: 0;
-    display: block; /* Ensure it takes full width */
+    display: block;
 }
 
-/* Standard HTML5 audio player */
 audio {
     width: 100%;
     margin-top: 0.5rem;
-    border-radius: 50px; /* Modern pill shape for the player controls */
-    height: 50px; /* Taller, more accessible controls */
+    border-radius: 50px;
+    height: 50px;
 }
 
-/* Google Drive iFrame player */
 .google-drive-audio {
     width: 100%;
-    height: 60px; /* A more compact height */
+    height: 60px;
     border: none;
-    border-radius: 6px; /* Slightly rounded corners */
+    border-radius: 6px;
 }
 
-/* Article Page */
-.article-main {
+/* Article & About Pages */
+.article-main, .about-main {
     max-width: 850px;
     margin: 2rem auto;
     padding: 3rem;
     background-color: var(--card-bg);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
+    transition: background-color 0.3s;
 }
 
 #article-title {
     font-size: 2.5rem;
-    color: var(--primary-color);
+    color: var(--text-color);
     margin-bottom: 1.5rem;
     line-height: 1.2;
     font-weight: 700;
@@ -319,6 +364,7 @@ audio {
 
 .article-image-container img {
     width: 100%;
+    aspect-ratio: 3 / 2;
     border-radius: var(--border-radius);
     object-fit: cover;
     cursor: pointer;
@@ -394,20 +440,10 @@ audio {
     text-decoration: none;
 }
 
-
-/* About Page */
-.about-main {
-    max-width: 850px;
-    margin: 2rem auto;
-    padding: 3rem;
-    background-color: var(--card-bg);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-}
-
+/* About Page Specifics */
 .about-content h2 {
     font-size: 2rem;
-    color: var(--primary-color);
+    color: var(--text-color);
     margin-bottom: 1rem;
     border-bottom: 2px solid var(--accent-color);
     padding-bottom: 0.5rem;
@@ -424,7 +460,7 @@ audio {
 .section-divider {
     border: 0;
     height: 1px;
-    background-color: #dee2e6;
+    background-color: var(--border-color);
     margin: 2.5rem 0;
 }
 
@@ -462,13 +498,14 @@ audio {
 .team-member-card h3 {
     margin: 0;
     font-size: 1.25rem;
-    color: var(--primary-color);
+    color: var(--text-color);
     font-weight: 600;
 }
 
 .team-member-card .title {
     font-size: 0.95rem;
-    color: #6c757d;
+    color: var(--text-color);
+    opacity: 0.8;
     margin: 0.25rem 0 0 0;
 }
 
@@ -484,12 +521,13 @@ audio {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     margin-bottom: 2rem;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s;
 }
 
 .creator-form h2 {
     font-size: 1.8rem;
-    color: var(--primary-color);
+    color: var(--text-color);
     margin-top: 0;
     font-weight: 600;
 }
@@ -508,11 +546,13 @@ audio {
 .form-group input, .form-group select, .form-group textarea {
     width: 100%;
     padding: 0.8rem 1rem;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--input-border-color);
     border-radius: 6px;
     font-size: 1rem;
     box-sizing: border-box;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s, color 0.3s;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
 }
 
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
@@ -548,6 +588,10 @@ audio {
     border-radius: var(--border-radius);
 }
 
+.dark-mode .output-container {
+    background-color: #1f2b38;
+}
+
 #output-code {
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -557,6 +601,11 @@ audio {
     border: 1px solid #495057;
     font-family: 'Courier New', Courier, monospace;
 }
+.dark-mode #output-code {
+    background-color: #2c3e50;
+    border-color: #5d7a99;
+}
+
 
 #copy-btn {
     background-color: #3498db;
@@ -609,7 +658,7 @@ audio {
 }
 
 .password-box h2 {
-    color: var(--primary-color);
+    color: var(--text-color);
     margin-top: 0;
     font-weight: 600;
 }
@@ -618,7 +667,9 @@ audio {
     width: 100%;
     padding: 0.8rem 1rem;
     margin: 1rem 0;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--input-border-color);
+    background-color: var(--secondary-color);
+    color: var(--text-color);
     border-radius: 6px;
     box-sizing: border-box;
 }
@@ -663,7 +714,7 @@ audio {
 /* Tabs and QR Generator */
 .creator-tabs {
     display: flex;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid var(--border-color);
     margin-bottom: 2rem;
 }
 
@@ -674,19 +725,21 @@ audio {
     background-color: transparent;
     font-size: 1rem;
     font-weight: 600;
-    color: #6c757d;
+    color: var(--text-color);
+    opacity: 0.7;
     border-bottom: 3px solid transparent;
     transition: color 0.3s, border-color 0.3s, background-color 0.3s;
     margin-bottom: -1px;
 }
 
 .tab-link:hover:not(.active) {
-    background-color: #f0f0f0;
-    color: var(--primary-color);
+    background-color: rgba(0,0,0,0.1);
+    opacity: 1;
 }
 
 .tab-link.active {
-    color: var(--primary-color);
+    color: var(--text-color);
+    opacity: 1;
     border-bottom-color: var(--accent-color);
 }
 
@@ -705,7 +758,7 @@ audio {
     background-color: #fff;
     border-radius: 6px;
     margin-bottom: 1.5rem;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--border-color);
 }
 
 #qr-code-img {
@@ -751,9 +804,10 @@ audio {
 footer {
     text-align: center;
     padding: 2.5rem;
-    background-color: var(--primary-color);
-    color: #ecf0f1;
+    background-color: var(--header-bg);
+    color: var(--header-text);
     margin-top: 3rem;
+    transition: background-color 0.3s;
 }
 
 footer a {
@@ -774,20 +828,20 @@ footer a:hover {
     background-color: #28a745;
     color: white;
     padding: 1rem 1.5rem;
-    border-radius: 50px; /* Pill shape */
-    z-index: 1001; /* Ensures it floats above other content */
+    border-radius: 50px;
+    z-index: 1001;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     font-weight: 600;
     transition: background-color 0.3s, transform 0.2s;
     border: none;
-    animation: pulse 2.5s infinite ease-in-out 2s; /* Start pulsing after 2s */
+    animation: pulse 2.5s infinite ease-in-out 2s;
 }
 
 #download-pdf-btn:hover {
     background-color: #218838;
-    transform: translateY(-3px); /* Subtle lift on hover */
+    transform: translateY(-3px);
     cursor: pointer;
-    animation-play-state: paused; /* Pause pulsing on hover */
+    animation-play-state: paused;
 }
 
 
@@ -795,9 +849,10 @@ footer a:hover {
     header {
         flex-direction: column;
         padding: 1rem 5%;
+        gap: 1rem;
     }
-    header h1 {
-        margin-bottom: 0.5rem;
+    header nav {
+        gap: 1.5rem;
     }
     .search-container {
         flex-direction: column;
