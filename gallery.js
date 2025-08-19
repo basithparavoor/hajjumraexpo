@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modalViewMore.href = item.dataset.articleUrl;
             modalDownloadBtn.href = item.dataset.src;
             
-            // Create a safe filename for downloading
+            // Create a safe filename and add the 'download' attribute to force download
             const safeFilename = `${item.dataset.title.replace(/[\s/\\?%*:|"<>]/g, '_')}_HAJJ_UMRA_EXPO.jpg`;
             modalDownloadBtn.setAttribute('download', safeFilename);
             
