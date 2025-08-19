@@ -2,87 +2,89 @@
 // FILE: script.js
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
+    const researchGrid = document.getElementById('research-grid');
     const searchInput = document.getElementById('searchInput');
     const topicFilter = document.getElementById('topicFilter');
-    const researchGrid = document.getElementById('research-grid');
 
-    if (!researchGrid || typeof articles === 'undefined') {
-        console.error("Required elements or articles data not found.");
-        return;
-    }
+    // --- NEW: Automatic Header Image Slideshow ---
+    const heroContainer = document.querySelector('.hero-container');
+    if (heroContainer && typeof articles !== 'undefined' && articles.length > 0) {
+        // 1. Collect all available image URLs from the articles array
+        const allImages = articles.flatMap(article => article.images);
+        
+        if (allImages.length > 0) {
+            let currentIndex = 0;
 
-    // --- 1. Populate Topic Filter ---
-    const populateTopics = () => {
-        const topics = new Set(articles.map(article => article.topic));
-        topics.forEach(topic => {
-            const option = document.createElement('option');
-            option.value = topic;
-            // Capitalize the first letter for better display
-            option.textContent = topic.charAt(0).toUpperCase() + topic.slice(1);
-            topicFilter.appendChild(option);
-        });
-    };
+            // Optional: Preload images in the background for smoother transitions
+            allImages.forEach(src => {
+                new Image().src = src;
+            });
 
-    // --- 2. Display Articles in the Grid ---
-    const displayArticles = (articlesToDisplay) => {
-        researchGrid.innerHTML = ''; // Clear existing articles
+            // 2. Set the first image immediately
+            heroContainer.style.backgroundImage = `url('${allImages[0]}')`;
 
-        if (articlesToDisplay.length === 0) {
-            researchGrid.innerHTML = '<p class="no-results">No articles found. Try adjusting your search or filter.</p>';
-            return;
+            // 3. Set up the interval to change the image every 3 seconds
+            setInterval(() => {
+                // Move to the next image index, looping back to the start if needed
+                currentIndex = (currentIndex + 1) % allImages.length;
+                
+                // 4. Update the background image of the hero container
+                heroContainer.style.backgroundImage = `url('${allImages[currentIndex]}')`;
+            }, 3000); // 3000 milliseconds = 3 seconds
         }
+    }
+    // --- End of Slideshow Code ---
 
-        articlesToDisplay.forEach(article => {
+
+    // Function to populate the homepage with article cards
+    function populateHomepage() {
+        researchGrid.innerHTML = ''; // Clear existing content
+        articles.forEach((article, index) => {
             const card = document.createElement('a');
             card.href = `article.html?id=${article.id}`;
-            card.className = 'research-card';
+            card.className = 'research-card fade-in-up';
+            card.style.animationDelay = `${index * 100}ms`; // Staggered animation delay
+            card.dataset.topic = article.topic;
+            card.dataset.title = article.title.toLowerCase();
+            card.dataset.keywords = article.keywords.toLowerCase();
 
-            const image = document.createElement('img');
-            // Use the first image as the thumbnail
-            image.src = article.images[0] || 'https://placehold.co/600x400/EEE/31343C?text=No+Image';
-            image.alt = article.title;
-            image.loading = 'lazy';
+            // Create a short preview of the notes
+            const notesPreview = article.notes.substring(0, 200).split(' ').slice(0, -1).join(' ') + '...';
 
-            const title = document.createElement('h3');
-            title.textContent = article.title;
-            
-            // Create a short description from the notes
-            const description = document.createElement('p');
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = article.notes;
-            description.textContent = tempDiv.textContent.substring(0, 100) + '...';
-
-
-            card.appendChild(image);
-            card.appendChild(title);
-            card.appendChild(description);
+            card.innerHTML = `
+                <h2>${article.title}</h2>
+                <div class="image-container">
+                    <img src="${article.images[0]}" alt="${article.title} Image 1">
+                    <img src="${article.images[1]}" alt="${article.title} Image 2">
+                </div>
+                <div class="notes">
+                    <h3>Key Notes</h3>
+                    ${notesPreview}
+                </div>
+            `;
             researchGrid.appendChild(card);
         });
-    };
+    }
 
-    // --- 3. Filter and Search Logic ---
-    const filterAndSearch = () => {
+    // Function to filter cards based on search and topic
+    function filterContent() {
         const searchTerm = searchInput.value.toLowerCase().trim();
         const selectedTopic = topicFilter.value;
+        const cards = researchGrid.getElementsByClassName('research-card');
 
-        const filteredArticles = articles.filter(article => {
-            const matchesTopic = selectedTopic === 'all' || article.topic === selectedTopic;
-            
-            const matchesSearch = 
-                article.title.toLowerCase().includes(searchTerm) ||
-                article.keywords.toLowerCase().includes(searchTerm);
+        for (let card of cards) {
+            const topicMatch = (selectedTopic === 'all' || card.dataset.topic === selectedTopic);
+            const searchMatch = (card.dataset.title.includes(searchTerm) || card.dataset.keywords.includes(searchTerm));
 
-            return matchesTopic && matchesSearch;
-        });
+            if (topicMatch && searchMatch) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        }
+    }
 
-        displayArticles(filteredArticles);
-    };
-
-    // --- 4. Add Event Listeners ---
-    searchInput.addEventListener('input', filterAndSearch);
-    topicFilter.addEventListener('change', filterAndSearch);
-
-    // --- 5. Initial Load ---
-    populateTopics();
-    displayArticles(articles); // Display all articles initially
+    populateHomepage(); // Initial population of the grid
+    searchInput.addEventListener('keyup', filterContent);
+    topicFilter.addEventListener('change', filterContent);
 });
