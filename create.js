@@ -170,13 +170,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 5. Notification Creator ---
-    const sendNotificationBtn = document.getElementById('send-notification-btn');
+    const generateNotificationBtn = document.getElementById('generate-notification-btn');
     const notificationTitleInput = document.getElementById('notification-title');
     const notificationMessageInput = document.getElementById('notification-message');
-    const notificationFeedback = document.getElementById('notification-feedback');
+    const copyNotificationBtn = document.getElementById('copy-notification-btn');
 
-    if (sendNotificationBtn) {
-        sendNotificationBtn.addEventListener('click', () => {
+    if (generateNotificationBtn) {
+        generateNotificationBtn.addEventListener('click', () => {
             const title = notificationTitleInput.value.trim();
             const message = notificationMessageInput.value.trim();
 
@@ -193,20 +193,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 timestamp: new Date().toISOString()
             };
 
-            // Retrieve, update, and save notifications in localStorage
-            const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-            notifications.push(newNotification);
-            localStorage.setItem('notifications', JSON.stringify(notifications));
-
-            // Show feedback to the user
-            notificationFeedback.classList.remove('hidden');
-            setTimeout(() => {
-                notificationFeedback.classList.add('hidden');
-            }, 3000);
-
+            // Display the generated code
+            const outputCode = document.querySelector('#notification-output-code code');
+            outputCode.textContent = `// Add this object to the 'initialNotifications' array in notifications.js\n${JSON.stringify(newNotification, null, 4)},`;
+            
             // Clear the form
             notificationTitleInput.value = '';
             notificationMessageInput.value = '';
+        });
+    }
+
+    if (copyNotificationBtn) {
+        copyNotificationBtn.addEventListener('click', () => {
+            const codeToCopy = document.querySelector('#notification-output-code code').textContent;
+            navigator.clipboard.writeText(codeToCopy).then(() => {
+                const feedback = document.getElementById('copy-notification-feedback');
+                feedback.classList.remove('hidden');
+                setTimeout(() => feedback.classList.add('hidden'), 2000);
+            }).catch(err => {
+                console.error('Failed to copy notification text: ', err);
+            });
         });
     }
 });

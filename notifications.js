@@ -1,26 +1,44 @@
 // ============================================================
 // FILE: notifications.js
+// Handles notification logic, now using notification-data.js
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Mock Data ---
-    // In a real application, this would come from a server.
-    const initialNotifications = [
-        { id: 1, title: 'New Feature', message: 'You can now create QR codes for your articles.', read: false, timestamp: '2025-08-19T10:00:00Z' },
-        { id: 2, title: 'Maintenance', message: 'The site will be down for maintenance this Friday at midnight.', read: false, timestamp: '2025-08-18T15:30:00Z' },
-        { id: 3, title: 'Welcome!', message: 'Thanks for joining the Hajj Umra Expo community.', read: true, timestamp: '2025-08-17T12:00:00Z' },
-        { id: 4, title: 'Gallery Update', message: 'New images from the latest event have been added.', read: false, timestamp: '2025-08-19T11:00:00Z' }
-    ];
 
     // --- Helper Functions ---
-    const getNotifications = () => {
+    const getStoredNotifications = () => {
         const notifications = localStorage.getItem('notifications');
-        return notifications ? JSON.parse(notifications) : initialNotifications;
+        return notifications ? JSON.parse(notifications) : [];
     };
 
     const saveNotifications = (notifications) => {
         localStorage.setItem('notifications', JSON.stringify(notifications));
     };
-    
+
+    // --- Core Data Initialization ---
+    const initializeNotifications = () => {
+        const staticNotifications = typeof getAllNotifications === 'function' ? getAllNotifications() : [];
+        let storedNotifications = getStoredNotifications();
+        
+        // Create a map of stored notifications for quick lookup
+        const storedIds = new Map(storedNotifications.map(n => [n.id, n]));
+
+        // Merge static notifications with stored ones
+        // This adds new notifications from the data file without overwriting user's read/deleted status
+        const mergedNotifications = staticNotifications.map(staticNotif => {
+            const storedNotif = storedIds.get(staticNotif.id);
+            if (storedNotif) {
+                // If notification exists in storage, keep its read status
+                return { ...staticNotif, read: storedNotif.read };
+            }
+            // Otherwise, it's a new notification
+            return staticNotif;
+        });
+
+        saveNotifications(mergedNotifications);
+        return mergedNotifications;
+    };
+
+
     const timeAgo = (date) => {
         const seconds = Math.floor((new Date() - new Date(date)) / 1000);
         let interval = seconds / 31536000;
@@ -36,10 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return Math.floor(seconds) + " seconds ago";
     };
 
-
-    // --- Core Functions ---
+    // --- UI Functions ---
     const updateNotificationCount = () => {
-        const notifications = getNotifications();
+        const notifications = getStoredNotifications();
         const unreadCount = notifications.filter(n => !n.read).length;
         const countBadge = document.getElementById('notification-count');
         
@@ -57,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const notificationsList = document.getElementById('notifications-list');
         if (!notificationsList) return;
 
-        const notifications = getNotifications().sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        const notifications = getStoredNotifications().sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         notificationsList.innerHTML = '';
 
         if (notifications.length === 0) {
@@ -84,13 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             
-            // Mark as read when the main item is clicked
-            item.addEventListener('click', () => markAsRead(notification.id));
-
-            // Delete when the delete button is clicked
+            item.querySelector('.notification-content').addEventListener('click', () => markAsRead(notification.id));
+            
             const deleteBtn = item.querySelector('.delete-notification-btn');
             deleteBtn.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent the 'markAsRead' click from firing
+                event.stopPropagation();
                 deleteNotification(notification.id);
             });
 
@@ -99,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const markAsRead = (id) => {
-        let notifications = getNotifications();
+        let notifications = getStoredNotifications();
         const index = notifications.findIndex(n => n.id === id);
         if (index > -1 && !notifications[index].read) {
             notifications[index].read = true;
@@ -112,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const markAllAsRead = () => {
-        let notifications = getNotifications();
+        let notifications = getStoredNotifications();
         notifications.forEach(n => n.read = true);
         saveNotifications(notifications);
         updateNotificationCount();
@@ -120,8 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const deleteNotification = (id) => {
-        let notifications = getNotifications();
-        // Create a new array without the deleted notification
+        let notifications = getStoredNotifications();
         const updatedNotifications = notifications.filter(n => n.id !== id);
         saveNotifications(updatedNotifications);
         updateNotificationCount();
@@ -135,10 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // --- Initialization ---
-    if (!localStorage.getItem('notifications')) {
-        saveNotifications(initialNotifications);
-    }
-
+    initializeNotifications();
     updateNotificationCount();
     if (document.getElementById('notifications-list')) {
         renderNotifications();

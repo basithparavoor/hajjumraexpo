@@ -130,7 +130,7 @@
             <div id="notification-creator" class="tab-content">
                 <div class="creator-form">
                     <h2>Create a Notification or Announcement</h2>
-                    <p>This will send a notification to all users.</p>
+                    <p>This will generate a notification object. Copy the code and add it to the 'initialNotifications' array in the <strong>notifications.js</strong> file.</p>
 
                     <div class="form-group">
                         <label for="notification-title">Title</label>
@@ -140,8 +140,13 @@
                         <label for="notification-message">Message</label>
                         <textarea id="notification-message" rows="4" placeholder="Enter the notification content here..."></textarea>
                     </div>
-                    <button id="send-notification-btn">Send Notification</button>
-                    <p id="notification-feedback" class="hidden">Notification sent!</p>
+                    <button id="generate-notification-btn">Generate Notification Code</button>
+                </div>
+                <div class="output-container">
+                    <h3>Generated Notification Code</h3>
+                    <pre id="notification-output-code"><code>// Your notification code will appear here...</code></pre>
+                    <button id="copy-notification-btn">Copy to Clipboard</button>
+                    <p id="copy-notification-feedback" class="hidden">Copied!</p>
                 </div>
             </div>
             
