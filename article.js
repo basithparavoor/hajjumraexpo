@@ -21,7 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const articleId = params.get('id');
 
-    const article = articles.find(a => a.id === articleId);
+    // --- FIX APPLIED HERE ---
+    // Convert the string 'articleId' from the URL to a number before comparing.
+    const article = articles.find(a => a.id === parseInt(articleId));
 
     if (article) {
         document.title = article.title;
