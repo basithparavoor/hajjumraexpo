@@ -3,16 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About</title>
+    <title>About | EXPO 2025</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header>
         <h1><a href="index.html">HAJJ UMRA EXPO</a></h1>
         <nav>
-            <a href="index.html">Home</a>
+            <div id="main-nav-links">
+                <a href="index.html">Home</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="about.html">About</a>
+            </div>
+            
+            <div id="user-profile-container" class="hidden">
+                <img id="profile-icon" src="https://placehold.co/40x40/1abc9c/ffffff?text=U" alt="User Profile">
+                <div id="profile-dropdown" class="profile-dropdown hidden">
+                    <button id="sign-out-btn">Sign Out</button>
+                </div>
+            </div>
+
             <button id="theme-toggle" class="theme-toggle-btn">🌙</button>
         </nav>
     </header>
@@ -51,7 +66,32 @@
     <footer>
         <p>&copy; 2025 <a href="https://www.google.com/search?q=Basith+Paravoor" target="_blank" rel="noopener noreferrer">Basith Paravoor</a>. All Rights Reserved.</p>
     </footer>
+
+    <div id="auth-modal" class="auth-modal-overlay hidden">
+        <div class="auth-modal-content">
+            <h2>Welcome to HAJJ UMRA EXPO</h2>
+            <p>Please log in or register to continue.</p>
+            <div class="auth-form">
+                <div class="form-group">
+                    <label for="email">Email / Username</label>
+                    <input type="text" id="email" placeholder="Enter your username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password">
+                </div>
+                <button id="login-btn" class="button-download">Login</button>
+                <button id="register-btn" class="button-download" style="background-color: #555;">Register</button>
+            </div>
+            <div class="auth-divider"><span>OR</span></div>
+            <button id="google-btn" class="button-google">
+                <img src="https://www.google.com/favicon.ico" alt="Google icon">
+                Continue with Google
+            </button>
+        </div>
+    </div>
     
     <script src="theme.js"></script>
+    <script src="auth.js"></script>
 </body>
 </html>

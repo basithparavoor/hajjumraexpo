@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research Article</title>
-
+    <title>Gallery | EXPO 2025</title>
+    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -34,15 +32,13 @@
         </nav>
     </header>
 
-    <main class="article-main">
-        <button id="download-pdf-btn" class="button-download hidden">Download as PDF</button>
-
-        <article id="article-content">
-            <h1 id="article-title">Loading Article...</h1>
-            <div id="article-images" class="article-image-container"></div>
-            <div id="article-notes" class="notes"></div>
-            <div id="article-audio" class="audio-player"></div>
-        </article>
+    <main class="gallery-main">
+        <div class="gallery-header">
+            <h2>Image Gallery</h2>
+            <p>A visual collection of moments and landmarks from our articles.</p>
+        </div>
+        <div id="gallery-grid">
+            </div>
     </main>
 
     <footer>
@@ -53,10 +49,14 @@
         <span class="modal-close">&times;</span>
         <img class="modal-content" id="modal-image">
         <div class="modal-caption">
+             <div id="modal-details" class="modal-details-container">
+                <h3 id="modal-title"></h3>
+                <a id="modal-view-more" class="button-download" href="#">View Full Article</a>
+            </div>
             <a id="modal-download-btn" class="button-download" href="#" download>Download Image</a>
         </div>
     </div>
-    
+
     <div id="auth-modal" class="auth-modal-overlay hidden">
         <div class="auth-modal-content">
             <h2>Welcome to HAJJ UMRA EXPO</h2>
@@ -82,7 +82,7 @@
     </div>
     
     <script src="data.js"></script>
-    <script src="article.js"></script>
+    <script src="gallery.js"></script>
     <script src="theme.js"></script>
     <script src="auth.js"></script>
 </body>

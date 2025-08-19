@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EXPO 2025</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
 </head>
@@ -12,29 +16,36 @@
     <header>
         <h1><a href="index.html">HAJJ UMRA EXPO</a></h1>
         <nav>
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
+            <div id="main-nav-links">
+                <a href="index.html">Home</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="about.html">About</a>
+            </div>
+            
+            <div id="user-profile-container" class="hidden">
+                <img id="profile-icon" src="https://placehold.co/40x40/1abc9c/ffffff?text=U" alt="User Profile">
+                <div id="profile-dropdown" class="profile-dropdown hidden">
+                    <button id="sign-out-btn">Sign Out</button>
+                </div>
+            </div>
+
             <button id="theme-toggle" class="theme-toggle-btn">🌙</button>
         </nav>
     </header>
 
     <main>
-
-         <div class="hero-container">
-            <div class="hero-text">
-                <h2>Explore Worlds of Knowledge</h2>
+        <div class="hero-container">
+             <div class="hero-text">
+                <h2>HAJJ UMRA EXPO</h2>
                 <p>Your premium gateway to curated research and insights.</p>
             </div>
         </div>
-
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search by keyword or title...">
+            <input type="text" id="searchInput" placeholder="Search articles by title or keyword...">
             <select id="topicFilter">
                 <option value="all">All Topics</option>
-                <option value="history">History</option>
             </select>
         </div>
-
         <div id="research-grid">
             </div>
     </main>
@@ -43,25 +54,34 @@
         <p>&copy; 2025 <a href="https://www.google.com/search?q=Basith+Paravoor" target="_blank" rel="noopener noreferrer">Basith Paravoor</a>. All Rights Reserved.</p>
     </footer>
 
+    <div id="auth-modal" class="auth-modal-overlay hidden">
+        <div class="auth-modal-content">
+            <h2>Welcome to HAJJ UMRA EXPO</h2>
+            <p>Please log in or register to continue.</p>
+            <div class="auth-form">
+                <div class="form-group">
+                    <label for="email">Email / Username</label>
+                    <input type="text" id="email" placeholder="Enter your username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password">
+                </div>
+                <button id="login-btn" class="button-download">Login</button>
+                <button id="register-btn" class="button-download" style="background-color: #555;">Register</button>
+            </div>
+            <div class="auth-divider"><span>OR</span></div>
+            <button id="google-btn" class="button-google">
+                <img src="https://www.google.com/favicon.ico" alt="Google icon">
+                Continue with Google
+            </button>
+        </div>
+    </div>
+    
     <script src="data.js"></script>
     <script src="script.js"></script>
     <script src="theme.js"></script>
-<script>
-    /*
-    // Service Worker registration commented out because sw.js file is missing.
-    // To enable, create a sw.js file with the appropriate service worker logic.
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(registration => {
-                    console.log('ServiceWorker registered successfully.');
-                }).catch(err => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-        });
-    }
-    */
-</script>
+    <script src="auth.js"></script>
 
 </body>
 </html>
