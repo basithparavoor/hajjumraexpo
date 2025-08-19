@@ -13,6 +13,9 @@
     --input-border-color: #ced4da;
     --header-bg: #2c3e50;
     --header-text: white;
+    --dropdown-bg: #ffffff;
+    --icon-color: #ffffff; 
+    --nav-link-color: #000000;
 }
 
 /* Add dark mode variables */
@@ -27,6 +30,9 @@
     --input-border-color: #5d7a99;
     --header-bg: #1f2c38;
     --header-text: #ecf0f1;
+    --dropdown-bg: #2c3e50;
+    --icon-color: #ffffff;   
+    --nav-link-color: #1abc9c;
 }
 
 
@@ -968,4 +974,102 @@ footer a:hover {
 }
 .modal-caption #modal-view-more:hover {
     background-color: var(--accent-color);
+}
+/* ============================================================
+// DROPDOWN NAVIGATION STYLES (For All Screen Sizes)
+// ============================================================ */
+
+/* --- Give the header a relative position for the dropdown --- */
+header {
+    position: relative;
+}
+
+/* --- Main nav container --- */
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Align items to the right */
+    gap: 1rem;
+}
+
+/* --- The Hamburger Menu Button (Now always visible) --- */
+.menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+    order: 3;
+}
+
+.menu-toggle .bar {
+    width: 2rem;
+    height: 0.25rem;
+    background-color: var(--icon-color); /* Use the new icon color variable */
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+}
+.menu-toggle.is-active .bar:nth-child(1) {
+    transform: translateY(0.75rem) rotate(45deg);
+}
+.menu-toggle.is-active .bar:nth-child(2) {
+    opacity: 0;
+}
+.menu-toggle.is-active .bar:nth-child(3) {
+    transform: translateY(-0.75rem) rotate(-45deg);
+}
+
+/* --- Dropdown Menu Styling --- */
+.nav-links {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 250px;
+    z-index: 1000;
+    background-color: var(--dropdown-bg);
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
+}
+
+/* --- Active state for dropdown --- */
+.nav-links.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0s;
+}
+
+/* --- Style the links inside the dropdown --- */
+.nav-links a,
+.nav-links #user-session a {
+    padding: 0.75rem 1.5rem;
+    width: 100%;
+    text-align: left;
+    font-size: 1.1rem;
+    color: var(--nav-link-color); /* Use the new link color variable */
+    text-decoration: none;         /* Optional: remove underline */
+    background-color: transparent; /* Ensure no background color on the link itself */
+    transition: background-color 0.2s ease;
+}
+
+/* --- Optional: Add a hover effect for links --- */
+.nav-links a:hover,
+.nav-links #user-session a:hover {
+    background-color: rgba(128, 128, 128, 0.1); /* A subtle hover effect */
 }
