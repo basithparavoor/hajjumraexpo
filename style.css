@@ -1324,3 +1324,118 @@ nav {
     align-items: flex-end;
     justify-content: space-between;
 }
+/* ============================================================ */
+/* INTERACTIVE MAP STYLES */
+/* ============================================================ */
+
+.map-container {
+    position: relative;
+    width: 100%;
+    height: 550px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    cursor: grab;
+    background-color: var(--secondary-color);
+    box-shadow: var(--shadow);
+    margin-top: 1.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.map-container:active {
+    cursor: grabbing;
+}
+
+#hijra-map {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform-origin: 0 0;
+    user-select: none; /* Prevents image dragging ghost */
+}
+
+.map-controls {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.map-controls button {
+    background-color: var(--primary-color);
+    color: var(--header-text);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.map-controls button:hover {
+    background-color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+#reset-btn {
+    font-size: 1.4rem;
+}
+/* ============================================================ */
+/* REFERENCE SECTION STYLES */
+/* ============================================================ */
+
+.reference-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.reference-item {
+    transition: transform 0.3s ease-in-out;
+}
+
+.reference-item:hover {
+    transform: translateY(-8px);
+}
+
+.reference-item img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    margin-bottom: 1rem;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.reference-item:hover img {
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.reference-item h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.reference-item .author {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin: 0.25rem 0 0 0;
+}

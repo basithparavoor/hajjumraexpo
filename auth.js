@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         allImages.forEach((src, index) => {
             const img = document.createElement('img');
             img.src = src;
-            img.alt = "Hajj Umra Expo background image";
+            img.alt = "HARAMAIN INSIGHTS background image";
             if (index === 0) {
                 img.classList.add('visible'); // Make the first image visible initially
             }

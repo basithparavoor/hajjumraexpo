@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 pdf.setFontSize(8);
                 pdf.setTextColor(150);
-                const footerText = `© 2025 Basith Paravoor | HAJJ UMRA EXPO. All Rights Reserved.`;
+                const footerText = `© 2025 Basith Paravoor | HARAMAIN INSIGHTS. All Rights Reserved.`;
                 const textWidth = pdf.getStringUnitWidth(footerText) * pdf.internal.getFontSize() / pdf.internal.scaleFactor;
                 const textX = (a4Width - textWidth) / 2;
                 const textY = pageHeight - 10;
