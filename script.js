@@ -46,7 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.animationDelay = `${index * 100}ms`; // Staggered animation delay
             card.dataset.topic = article.topic;
             card.dataset.title = article.title.toLowerCase();
-            card.dataset.keywords = article.keywords.toLowerCase();
+            
+            // --- FIX APPLIED HERE ---
+            // Convert the array of keywords to a single lowercase string
+            card.dataset.keywords = article.keywords.join(' ').toLowerCase();
 
             // Create a short preview of the notes
             const notesPreview = article.notes.substring(0, 200).split(' ').slice(0, -1).join(' ') + '...';
