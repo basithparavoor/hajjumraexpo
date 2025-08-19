@@ -9,16 +9,29 @@
 <body>
 
     <header>
-        <h1><a href="index.html">HAJJ UMRA EXPO</a></h1>
-        <nav>
-            <a href="index.html">Home</a>
+    <h1><a href="index.html">HAJJ UMRA EXPO</a></h1>
+    <nav>
+        <div class="nav-links" id="nav-links">
+            <a href="gallery.html">Gallery</a>
             <a href="about.html">About</a>
-            <span id="user-session">
-                <a href="signin.html" id="signin-link">Sign In</a>
-            </span>
-            <button id="theme-toggle" class="theme-toggle-btn">🌙</button>
-        </nav>
-    </header>
+        </div>
+        <span id="user-session">
+            <a href="signin.html" id="signin-link" class="user-icon-link" aria-label="Sign In">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </a>
+        </span>
+
+        <button id="theme-toggle" class="theme-toggle-btn">🌙</button>
+        <button id="menu-toggle" class="menu-toggle" aria-label="Toggle menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+    </nav>
+</header>
 
     <main class="gallery-main">
         <div class="gallery-header">
@@ -49,5 +62,6 @@
     <script src="gallery.js"></script>
     <script src="theme.js"></script>
     <script src="user.js"></script>
+    <script src="nav.js"></script>
 </body>
 </html>

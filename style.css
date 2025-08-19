@@ -127,6 +127,19 @@ header nav a:hover {
     color: var(--accent-color);
 }
 
+#user-session .user-icon-link svg {
+    width: 28px;
+    height: 28px;
+    stroke: var(--header-text);
+    transition: stroke 0.3s ease, transform 0.3s ease;
+}
+
+#user-session .user-icon-link:hover svg {
+    stroke: var(--accent-color);
+    transform: scale(1.1);
+}
+
+
 /* Theme Toggle Button */
 .theme-toggle-btn {
     background-color: rgba(255, 255, 255, 0.1);
