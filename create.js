@@ -1,201 +1,212 @@
 // ============================================================
 // FILE: create.js
+// Handles all functionality for the admin creation page.
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- Password Protection Logic ---
-    const CORRECT_PASSWORD = "MSOE@2025";
+
+    // --- 1. Password Protection ---
     const passwordOverlay = document.getElementById('password-overlay');
     const passwordInput = document.getElementById('password-input');
     const passwordSubmit = document.getElementById('password-submit');
     const passwordError = document.getElementById('password-error');
     const protectedContent = document.getElementById('protected-content');
     
-    passwordSubmit.addEventListener('click', () => {
-        if (passwordInput.value === CORRECT_PASSWORD) {
-            passwordOverlay.style.display = 'none';
-            protectedContent.classList.remove('hidden'); 
-        } else {
-            passwordError.classList.remove('hidden');
-            passwordInput.value = '';
-        }
-    });
-    
-    passwordInput.addEventListener('keyup', (event) => {
-        if (event.key === 'Enter') {
-            passwordSubmit.click();
-        }
-    });
+    // The password to access the admin page.
+    // In a real application, this should be handled securely on a server.
+    const ADMIN_PASSWORD = "MSOE@2025"; 
 
-    // --- Tab Switching Logic ---
-    const tabLinks = document.querySelectorAll('.tab-link');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            tabLinks.forEach(l => l.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
-
-            const tabId = link.getAttribute('data-tab');
-            const activeContent = document.getElementById(tabId);
-            
-            link.classList.add('active');
-            activeContent.classList.add('active');
-        });
-    });
-    
-    // --- Add New Topic Logic ---
-    const addTopicBtn = document.getElementById('add-topic-btn');
-    const topicSelect = document.getElementById('topic');
-
-    addTopicBtn.addEventListener('click', () => {
-        const newTopicName = prompt("Please enter the new topic name:");
-
-        if (newTopicName && newTopicName.trim() !== "") {
-            const trimmedName = newTopicName.trim();
-            const topicValue = trimmedName.toLowerCase().replace(/\s+/g, '-');
-
-            const optionExists = Array.from(topicSelect.options).some(option => option.value === topicValue);
-
-            if (optionExists) {
-                alert("This topic already exists!");
+    if (passwordSubmit) {
+        passwordSubmit.addEventListener('click', () => {
+            if (passwordInput.value === ADMIN_PASSWORD) {
+                passwordOverlay.classList.add('hidden');
+                protectedContent.classList.remove('hidden');
             } else {
-                const newOption = document.createElement('option');
-                newOption.value = topicValue;
-                newOption.textContent = trimmedName;
-                
-                topicSelect.appendChild(newOption);
-                topicSelect.value = topicValue;
+                passwordError.classList.remove('hidden');
+                passwordInput.value = '';
             }
-        }
-    });
-    
-    // --- Article Creator Logic ---
-    const generateBtn = document.getElementById('generate-btn');
-    const copyBtn = document.getElementById('copy-btn');
-    const outputCodeEl = document.getElementById('output-code').querySelector('code');
-    const copyFeedback = document.getElementById('copy-feedback');
-    const addImageBtn = document.getElementById('add-image-btn');
-    const imageFieldsContainer = document.getElementById('image-fields-container');
-    let imageCounter = 2;
+        });
 
-    addImageBtn.addEventListener('click', () => {
-        const newFormGroup = document.createElement('div');
-        newFormGroup.className = 'form-group';
-        const newLabel = document.createElement('label');
-        newLabel.textContent = `Image URL ${imageCounter}`;
-        const newInput = document.createElement('input');
-        newInput.type = 'text';
-        newInput.className = 'image-url-input';
-        newInput.placeholder = 'Paste a direct image link here';
-        newFormGroup.appendChild(newLabel);
-        newFormGroup.appendChild(newInput);
-        imageFieldsContainer.appendChild(newFormGroup);
-        imageCounter++;
-    });
-
-    // This function now only processes Google Drive links for audio.
-    function convertDriveLink(shareLink, type = 'audio') {
-        if (shareLink && shareLink.includes('drive.google.com/file/d/')) {
-            try {
-                const parts = shareLink.split('/d/');
-                const fileId = parts[1].split('/')[0];
-                if (type === 'audio') {
-                    return `https://drive.google.com/file/d/${fileId}/preview`;
-                }
-            } catch (error) {
-                console.error("Could not parse Google Drive link:", shareLink, error);
-                return '';
+        // Allow pressing Enter to submit
+        passwordInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                passwordSubmit.click();
             }
-        }
-        return shareLink;
+        });
     }
 
-    generateBtn.addEventListener('click', () => {
-        const title = document.getElementById('title').value;
-        const topic = document.getElementById('topic').value;
-        const keywords = document.getElementById('keywords').value;
-        const notes = document.getElementById('notes').value.trim();
-        const audioShareLink = document.getElementById('audio').value;
 
-        if (!title || !keywords || !notes) {
-            alert('Please fill out Title, Keywords, and Notes.');
-            return;
-        }
+    // --- 2. Tab Functionality ---
+    const tabs = document.querySelectorAll('.tab-link');
+    const tabContents = document.querySelectorAll('.tab-content');
 
-        const allImageInputs = document.querySelectorAll('#article-creator .image-url-input');
-        const imageShareLinks = [];
-        allImageInputs.forEach(input => {
-            if (input.value.trim() !== '') {
-                imageShareLinks.push(input.value.trim());
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = document.getElementById(tab.dataset.tab);
+            
+            // Deactivate all tabs and content
+            tabs.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            // Activate the clicked tab and its content
+            tab.classList.add('active');
+            if (target) {
+                target.classList.add('active');
             }
         });
-
-        const finalImages = imageShareLinks; // Use direct links
-        const imagesArrayString = finalImages.map(link => `\n            '${link}'`).join(',');
-        
-        const finalAudioLink = convertDriveLink(audioShareLink, 'audio');
-        const id = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-
-        const articleObjectString = `
-    {
-        id: '${id}',
-        topic: '${topic}',
-        keywords: '${keywords}',
-        title: '${title}',
-        images: [${imagesArrayString}
-        ],
-        notes: \`
-            ${notes}
-        \`,
-        audioSrc: '${finalAudioLink}'
-    },`;
-
-        outputCodeEl.textContent = articleObjectString;
     });
 
-    copyBtn.addEventListener('click', () => {
-        const codeToCopy = outputCodeEl.textContent;
-        navigator.clipboard.writeText(codeToCopy).then(() => {
-            copyFeedback.classList.remove('hidden');
-            setTimeout(() => {
-                copyFeedback.classList.add('hidden');
-            }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy text: ', err);
-            alert('Failed to copy text.');
+
+    // --- 3. Article Creator ---
+    const generateBtn = document.getElementById('generate-btn');
+    const copyBtn = document.getElementById('copy-btn');
+    const addImageBtn = document.getElementById('add-image-btn');
+    const addTopicBtn = document.getElementById('add-topic-btn');
+    const imageFieldsContainer = document.getElementById('image-fields-container');
+    let imageCount = 1;
+
+    if (addImageBtn) {
+        addImageBtn.addEventListener('click', () => {
+            imageCount++;
+            const newImageField = document.createElement('div');
+            newImageField.className = 'form-group';
+            newImageField.innerHTML = `
+                <label for="image${imageCount}">Image URL ${imageCount}</label>
+                <input type="text" id="image${imageCount}" class="image-url-input" placeholder="Paste another direct image link">
+            `;
+            imageFieldsContainer.appendChild(newImageField);
         });
-    });
+    }
 
-    // --- QR Code Generator Logic ---
+    if (addTopicBtn) {
+        addTopicBtn.addEventListener('click', () => {
+            const newTopic = prompt("Enter the new topic name:");
+            if (newTopic && newTopic.trim() !== "") {
+                const topicSelect = document.getElementById('topic');
+                const option = document.createElement('option');
+                option.value = newTopic.trim().toLowerCase().replace(/\s+/g, '-');
+                option.textContent = newTopic.trim();
+                topicSelect.appendChild(option);
+                topicSelect.value = option.value; // Select the new topic
+            }
+        });
+    }
+
+    if (generateBtn) {
+        generateBtn.addEventListener('click', () => {
+            const title = document.getElementById('title').value;
+            const topic = document.getElementById('topic').value;
+            const keywords = document.getElementById('keywords').value.split(',').map(k => k.trim());
+            const notes = document.getElementById('notes').value;
+            const audioLink = document.getElementById('audio').value;
+
+            const images = [];
+            document.querySelectorAll('.image-url-input').forEach(input => {
+                if (input.value.trim() !== '') {
+                    images.push(input.value.trim());
+                }
+            });
+            
+            // Convert Google Drive link to a direct play link
+            let audioSrc = '';
+            if (audioLink.includes('drive.google.com')) {
+                const fileId = audioLink.match(/d\/(.+?)\//);
+                if (fileId && fileId[1]) {
+                    audioSrc = `https://docs.google.com/uc?export=open&id=${fileId[1]}`;
+                }
+            }
+
+            const articleObject = {
+                id: Date.now(), // Use timestamp for a simple unique ID
+                title,
+                topic,
+                keywords,
+                images,
+                notes,
+                audio: audioSrc
+            };
+
+            const outputCode = document.querySelector('#output-code code');
+            outputCode.textContent = `// Add this object to the 'articles' array in data.js\n${JSON.stringify(articleObject, null, 4)},`;
+        });
+    }
+
+    if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            const codeToCopy = document.querySelector('#output-code code').textContent;
+            navigator.clipboard.writeText(codeToCopy).then(() => {
+                const feedback = document.getElementById('copy-feedback');
+                feedback.classList.remove('hidden');
+                setTimeout(() => feedback.classList.add('hidden'), 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        });
+    }
+
+
+    // --- 4. QR Code Generator ---
     const generateQrBtn = document.getElementById('generate-qr-btn');
     const qrLinkInput = document.getElementById('qr-link');
     const qrOutputContainer = document.getElementById('qr-output');
     const qrCodeImg = document.getElementById('qr-code-img');
     const downloadQrBtn = document.getElementById('download-qr-btn');
 
-    generateQrBtn.addEventListener('click', async () => {
-        const link = qrLinkInput.value.trim();
-        if (!link) {
-            alert('Please enter a link to generate a QR code.');
-            return;
-        }
-
-        const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(link)}`;
-        
-        qrCodeImg.src = qrApiUrl;
-        
-        try {
-            const response = await fetch(qrApiUrl);
-            const blob = await response.blob();
-            const objectUrl = URL.createObjectURL(blob);
+    if (generateQrBtn) {
+        generateQrBtn.addEventListener('click', () => {
+            const link = qrLinkInput.value.trim();
+            if (!link) {
+                alert("Please enter a URL.");
+                return;
+            }
             
-            downloadQrBtn.href = objectUrl;
+            // Using a free public API for QR code generation
+            const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(link)}`;
+            
+            qrCodeImg.src = qrApiUrl;
+            downloadQrBtn.href = qrApiUrl;
+            
             qrOutputContainer.classList.remove('hidden');
+        });
+    }
 
-        } catch (error) {
-            console.error('Failed to fetch QR code for download:', error);
-            alert('Could not prepare the QR code for download. Please try again.');
-        }
-    });
+    // --- 5. Notification Creator ---
+    const sendNotificationBtn = document.getElementById('send-notification-btn');
+    const notificationTitleInput = document.getElementById('notification-title');
+    const notificationMessageInput = document.getElementById('notification-message');
+    const notificationFeedback = document.getElementById('notification-feedback');
+
+    if (sendNotificationBtn) {
+        sendNotificationBtn.addEventListener('click', () => {
+            const title = notificationTitleInput.value.trim();
+            const message = notificationMessageInput.value.trim();
+
+            if (!title || !message) {
+                alert('Please fill out both title and message for the notification.');
+                return;
+            }
+
+            const newNotification = {
+                id: Date.now(), // Simple unique ID from timestamp
+                title: title,
+                message: message,
+                read: false,
+                timestamp: new Date().toISOString()
+            };
+
+            // Retrieve, update, and save notifications in localStorage
+            const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+            notifications.push(newNotification);
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+
+            // Show feedback to the user
+            notificationFeedback.classList.remove('hidden');
+            setTimeout(() => {
+                notificationFeedback.classList.add('hidden');
+            }, 3000);
+
+            // Clear the form
+            notificationTitleInput.value = '';
+            notificationMessageInput.value = '';
+        });
+    }
 });

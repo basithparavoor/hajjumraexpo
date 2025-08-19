@@ -20,36 +20,36 @@
 
     <div id="protected-content" class="hidden">
        <header>
-    <h1><a href="index.html">HAJJ UMRA EXPO</a></h1>
-    <nav>
-        <div class="nav-links" id="nav-links">
-            <a href="index.html">Home</a>
-            <a href="gallery.html">Gallery</a>
-            <a href="about.html">About</a>
-        </div>
-        <span id="user-session">
-            <a href="signin.html" id="signin-link" class="user-icon-link" aria-label="Sign In">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-            </a>
-        </span>
-
-        <button id="theme-toggle" class="theme-toggle-btn">🌙</button>
-        <button id="menu-toggle" class="menu-toggle" aria-label="Toggle menu">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </button>
-    </nav>
-</header>
+            <h1><a href="index.html">HAJJ UMRA EXPO</a></h1>
+            <nav>
+                <div class="nav-links" id="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="about.html">About</a>
+                </div>
+                <span id="user-session">
+                    <a href="signin.html" id="signin-link" class="user-icon-link" aria-label="Sign In">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </a>
+                </span>
+                <button id="theme-toggle" class="theme-toggle-btn">🌙</button>
+                <button id="menu-toggle" class="menu-toggle" aria-label="Toggle menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </nav>
+        </header>
 
 
         <main class="creator-main-container">
             <div class="creator-tabs">
                 <button class="tab-link active" data-tab="article-creator">Create Article</button>
                 <button class="tab-link" data-tab="qr-creator">Create QR Code</button>
+                <button class="tab-link" data-tab="notification-creator">Create Notification</button>
             </div>
 
             <div id="article-creator" class="tab-content active">
@@ -126,6 +126,25 @@
                     <a id="download-qr-btn" class="button-download" href="#" download="qrcode.png">Download QR Code</a>
                 </div>
             </div>
+            
+            <div id="notification-creator" class="tab-content">
+                <div class="creator-form">
+                    <h2>Create a Notification or Announcement</h2>
+                    <p>This will send a notification to all users.</p>
+
+                    <div class="form-group">
+                        <label for="notification-title">Title</label>
+                        <input type="text" id="notification-title" placeholder="e.g., Important Update">
+                    </div>
+                    <div class="form-group">
+                        <label for="notification-message">Message</label>
+                        <textarea id="notification-message" rows="4" placeholder="Enter the notification content here..."></textarea>
+                    </div>
+                    <button id="send-notification-btn">Send Notification</button>
+                    <p id="notification-feedback" class="hidden">Notification sent!</p>
+                </div>
+            </div>
+            
         </main>
 
         <footer>
@@ -134,6 +153,7 @@
     </div>
 
     <script src="create.js"></script>
+    <script src="notifications.js"></script>
     <script src="theme.js"></script>
     <script src="user.js"></script>
     <script src="nav.js"></script>
