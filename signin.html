@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | EXPO 2025</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <main class="auth-page">
+        <div class="auth-layout">
+            
+            <div class="branding-panel">
+                <div id="slideshow-container"></div>
+                <div class="branding-overlay"></div>
+                <div class="branding-content">
+                    <h1><a href="index.html">HAJJ UMRA EXPO</a></h1>
+                    <p>Your premium gateway to curated research and insights.</p>
+                </div>
+            </div>
+
+            <div class="form-panel">
+                <div class="form-container">
+                    <div id="signin-form-container">
+                        <h2>Welcome Back</h2>
+                        <form id="signin-form">
+                            <div class="form-group">
+                                <label for="signin-email">Email</label>
+                                <input type="email" id="signin-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signin-password">Password</label>
+                                <input type="password" id="signin-password" required>
+                            </div>
+                            <button type="submit" class="auth-button">Sign In</button>
+                            <p id="signin-error" class="error-message hidden"></p>
+                        </form>
+                        <p class="auth-toggle">Don't have an account? <a href="#" id="show-signup">Sign up</a></p>
+                    </div>
+
+                    <div id="signup-form-container" class="hidden">
+                        <h2>Create Your Account</h2>
+                        <form id="signup-form">
+                            <div class="form-group">
+                                <label for="signup-username">Username</label>
+                                <input type="text" id="signup-username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-email">Email</label>
+                                <input type="email" id="signup-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-password">Password</label>
+                                <input type="password" id="signup-password" required>
+                            </div>
+                            <button type="submit" class="auth-button">Create Account</button>
+                            <p id="signup-error" class="error-message hidden"></p>
+                        </form>
+                        <p class="auth-toggle">Already have an account? <a href="#" id="show-signin">Sign in</a></p>
+                    </div>
+                </div>
+
+                <footer>
+                    <p>&copy; 2025 <a href="https://www.google.com/search?q=Basith+Paravoor" target="_blank" rel="noopener noreferrer">Basith Paravoor</a>. All Rights Reserved.</p>
+                </footer>
+            </div>
+        </div>
+    </main>
+
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+</body>
+</html>

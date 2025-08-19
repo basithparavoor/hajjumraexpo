@@ -1,94 +1,115 @@
 // ============================================================
-// FILE: auth.js (Confirmed Correct)
+// FILE: auth.js
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- 1. Your web app's Firebase configuration ---
-    const firebaseConfig = {
-        apiKey: "AIzaSyDdxTS7aU451qRCFzFIiePllanxGMd3skc",
-        authDomain: "hajj-umra-expo-468c5.firebaseapp.com",
-        projectId: "hajj-umra-expo-468c5",
-        storageBucket: "hajj-umra-expo-468c5.appspot.com",
-        messagingSenderId: "831928545119",
-        appId: "1:831928545119:web:2ae9b8ea739b9c29ed50ea"
-    };
+    const signinFormContainer = document.getElementById('signin-form-container');
+    const signupFormContainer = document.getElementById('signup-form-container');
+    const showSignup = document.getElementById('show-signup');
+    const showSignin = document.getElementById('show-signin');
 
-    // --- 2. Initialize Firebase ---
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
+    const signinForm = document.getElementById('signin-form');
+    const signupForm = document.getElementById('signup-form');
 
-    // --- 3. GET DOM ELEMENTS ---
-    const authModal = document.getElementById('auth-modal');
-    const userProfileContainer = document.getElementById('user-profile-container');
-    const profileIcon = document.getElementById('profile-icon');
-    const profileDropdown = document.getElementById('profile-dropdown');
-    const signOutBtn = document.getElementById('sign-out-btn');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const loginBtn = document.getElementById('login-btn'); 
-    const registerBtn = document.getElementById('register-btn');
-    const googleBtn = document.getElementById('google-btn');
+    const signinError = document.getElementById('signin-error');
+    const signupError = document.getElementById('signup-error');
 
-    // --- 4. REAL-TIME AUTHENTICATION LISTENER ---
-    auth.onAuthStateChanged(user => {
+    // Toggle between sign-in and sign-up forms
+    showSignup.addEventListener('click', (e) => {
+        e.preventDefault();
+        signinFormContainer.classList.add('hidden');
+        signupFormContainer.classList.remove('hidden');
+    });
+
+    showSignin.addEventListener('click', (e) => {
+        e.preventDefault();
+        signupFormContainer.classList.add('hidden');
+        signinFormContainer.classList.remove('hidden');
+    });
+
+    // Handle Sign-Up
+    signupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        signupError.classList.add('hidden');
+
+        const username = document.getElementById('signup-username').value.trim();
+        const email = document.getElementById('signup-email').value.trim();
+        const password = document.getElementById('signup-password').value;
+
+        if (!username || !email || !password) {
+            signupError.textContent = 'All fields are required.';
+            signupError.classList.remove('hidden');
+            return;
+        }
+
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const existingUser = users.find(user => user.email === email);
+
+        if (existingUser) {
+            signupError.textContent = 'An account with this email already exists.';
+            signupError.classList.remove('hidden');
+            return;
+        }
+
+        const newUser = { username, email, password };
+        users.push(newUser);
+        localStorage.setItem('users', JSON.stringify(users));
+
+        sessionStorage.setItem('currentUser', JSON.stringify(newUser));
+        window.location.href = 'index.html';
+    });
+
+    // Handle Sign-In
+    signinForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        signinError.classList.add('hidden');
+
+        const email = document.getElementById('signin-email').value.trim();
+        const password = document.getElementById('signin-password').value;
+
+        if (!email || !password) {
+            signinError.textContent = 'Email and password are required.';
+            signinError.classList.remove('hidden');
+            return;
+        }
+
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const user = users.find(u => u.email === email && u.password === password);
+
         if (user) {
-            // User is signed in.
-            if (authModal) authModal.classList.add('hidden');
-            if (userProfileContainer) {
-                userProfileContainer.classList.remove('hidden');
-                if (user.photoURL) {
-                    profileIcon.src = user.photoURL;
-                } else {
-                    const initial = user.email ? user.email.charAt(0).toUpperCase() : 'U';
-                    profileIcon.src = `https://placehold.co/40x40/1abc9c/ffffff?text=${initial}`;
-                }
-            }
+            sessionStorage.setItem('currentUser', JSON.stringify(user));
+            window.location.href = 'index.html';
         } else {
-            // User is signed out.
-            if (authModal) authModal.classList.remove('hidden');
-            if (userProfileContainer) userProfileContainer.classList.add('hidden');
+            signinError.textContent = 'Invalid email or password.';
+            signinError.classList.remove('hidden');
         }
     });
 
-    // --- 5. EVENT LISTENERS FOR SIGN-IN/UP BUTTONS ---
-    if (registerBtn) {
-        registerBtn.addEventListener('click', () => {
-            auth.createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
-                .catch(error => alert(`Registration Error: ${error.message}`));
-        });
-    }
+    // --- Branding Panel Slideshow Logic ---
+    const slideshowContainer = document.getElementById('slideshow-container');
+    
+    if (slideshowContainer && typeof articles !== 'undefined') {
+        const allImages = articles.flatMap(article => article.images);
+        let currentImageIndex = 0;
 
-    if (loginBtn) {
-        loginBtn.addEventListener('click', () => {
-            auth.signInWithEmailAndPassword(emailInput.value, passwordInput.value)
-                .catch(error => alert(`Login Error: ${error.message}`));
+        // Create and append image elements
+        allImages.forEach((src, index) => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = "Hajj Umra Expo background image";
+            if (index === 0) {
+                img.classList.add('visible'); // Make the first image visible initially
+            }
+            slideshowContainer.appendChild(img);
         });
-    }
 
-    if (googleBtn) {
-        googleBtn.addEventListener('click', () => {
-            auth.signInWithPopup(googleProvider)
-                .catch(error => alert(`Google Sign-In Error: ${error.message}`));
-        });
-    }
+        const slides = slideshowContainer.querySelectorAll('img');
 
-    if (signOutBtn) {
-        signOutBtn.addEventListener('click', () => {
-            auth.signOut();
-        });
-    }
-
-    // --- UI Helpers ---
-    if (profileIcon) {
-        profileIcon.addEventListener('click', (event) => {
-            event.stopPropagation();
-            if (profileDropdown) profileDropdown.classList.toggle('hidden');
-        });
-    }
-    window.addEventListener('click', () => {
-        if (profileDropdown && !profileDropdown.classList.contains('hidden')) {
-            profileDropdown.classList.add('hidden');
+        if (slides.length > 1) {
+            setInterval(() => {
+                slides[currentImageIndex].classList.remove('visible');
+                currentImageIndex = (currentImageIndex + 1) % slides.length;
+                slides[currentImageIndex].classList.add('visible');
+            }, 3000); // Change image every 3 seconds
         }
-    });
+    }
 });
